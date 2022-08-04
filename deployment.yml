@@ -1,0 +1,130 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geek-server
+  labels:
+    app: geek-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geek-server
+  template:
+    metadata:
+      labels:
+        app: geek-server
+    spec:
+      containers:
+        - name: geek-server
+          image: anwarhb/geeks-profile
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: config-enc
+                  key: MYSQL_HOST
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: config-enc
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: config-enc
+                  key: MYSQL_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: geek-service
+spec:
+  type: ClusterIP
+  selector:
+    app: geek-server
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deploy
+  labels:
+    app: db-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-deploy
+  template:
+    metadata:
+      labels:
+        app: db-deploy
+    spec:
+      containers:
+        - name: db-deploy
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d
+            - name: pvc-sql
+              mountPath: /var/lib/mysql
+          env:
+            - name: MYSQL_ROOT_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: config-enc
+                  key: MYSQL_USER
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: config-enc
+                  key: MYSQL_PASSWORD
+      volumes:
+        - name: init
+          configMap:
+            name: sql-config
+        - name: pvc-sql
+          persistentVolumeClaim:
+            claimName: pvc-sql
+---
+# service for sql
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  type: ClusterIP
+  selector:
+    app: db-deploy
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: geek-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: geek-service
+                port:
+                  number: 5000
