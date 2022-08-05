@@ -12,7 +12,7 @@ pipeline{
 		stage('Build the image') {
 			steps {
 				dir('./') {
-					sh 'sudo docker build -t anwarhb/geeks_profile:latest ./geek_profile_task'
+					sh 'sudo docker build -t anwarhb/geeks_profile:latest ..'
 				}
 
 			}
