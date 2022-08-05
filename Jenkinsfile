@@ -6,17 +6,14 @@ pipeline{
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
 	}
 	stages {
-		stage('clone and cd to repo') {
-			steps {
-				git 'https://github.com/AnwarHb/geek_profile_task.git'
-				sh 'cd /geek_profile_task'
-			}
-		}
+
 		
     // build the image and give a tag
 		stage('Build the image') {
 			steps {
-				sh 'sudo docker build -t anwarhb/geeks_profile:latest .'
+				dir('./') {
+					sh 'sudo docker build -t anwarhb/geeks_profile:latest .'
+				}
 
 			}
 		}
