@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   web:
-    image: anwarhb/geeks_profile
+    image: anwarhb/geek_profile
     ports:
       - "5000:5000"
     environment:
