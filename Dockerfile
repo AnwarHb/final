@@ -1,17 +1,13 @@
 FROM python
 
-RUN apt-get update && apt-get install -y python3-pip && \
-    apt-get install default-libmysqlclient-dev libssl-dev -y 
+WORKDIR /geek
 
-RUN mkdir /GeeksApp
+COPY requirements.txt requirements.txt
 
-
-WORKDIR /GeeksApp
-
-COPY . .
-
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-CMD [ "python3", "app.py" ]
+COPY . .
+
+CMD ["python3", "app.py"]
