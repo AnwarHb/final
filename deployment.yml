@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: geek-server
-          image: anwarhb/geeks-profile
+          image: anwarhb/geek-profile
           ports:
             - containerPort: 5000
           env:
