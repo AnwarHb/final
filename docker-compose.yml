@@ -1,19 +1,19 @@
 version: "3.9"
 services:
   web:
-    mysql:
-      image: mysql:5.7
-      volumes:
-        - ./docker-entrypoint-initdb.d/:ro
-    environment:
-      - MYSQL_ROOT_USER=root
-      - MYSQL_ROOT_PASSWORD=password    
-    build: 
-      context: .
-      dockerfile: geek.Dockerfile
+    image: anwarhb/geeks_profile
     ports:
       - "5000:5000"
-    env_file:
-      - sql.env
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
     depends_on:
       - "mysql"
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/:ro
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=password
