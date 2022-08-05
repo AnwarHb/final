@@ -11,9 +11,8 @@ pipeline{
     // build the image and give a tag
 		stage('Build the image') {
 			steps {
-				dir('./') {
-					sh 'sudo docker build -t anwarhb/geeks_profile:latest ..'
-				}
+
+				sh 'sudo docker build -t anwarhb/geeks_profile:latest .'
 
 			}
 		}
