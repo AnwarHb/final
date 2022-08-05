@@ -23,15 +23,19 @@ In this repository, i used the code from:
  `minikube addons enable ingress`
 - apply the yaml files to build the cluster objects:
  `kubectl apply -f envConfig.yml`
+ 
  `kubectl apply -f sqlConfig.yml`
+ 
  `kubectl apply -f sqlVolume.yml`
+ 
  `kubectl apply -f deployment.yml`
  or:
  `Kubectl apply -f .`
 - in windows you may need to run in a tunnel to access the application:
  `minikube tunnel`
 - you will be able ro see the application in :
-- [http://localhose/geek](http://localhose/geek)
+ [http://localhose/geek](http://localhose/geek)
+ 
 #### Pods and services:
 pods : 
 [![](https://github.com/AnwarHb/geek_profile_task/blob/master/pods.png?raw=true)](https://github.com/AnwarHb/geek_profile_task/blob/master/pods.png?raw=true)
