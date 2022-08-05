@@ -22,6 +22,7 @@ In this repository, i used the code from:
  `minikube start`
  `minikube addons enable ingress`
 - apply the yaml files to build the cluster objects:
+
  `kubectl apply -f envConfig.yml`
  
  `kubectl apply -f sqlConfig.yml`
@@ -29,7 +30,9 @@ In this repository, i used the code from:
  `kubectl apply -f sqlVolume.yml`
  
  `kubectl apply -f deployment.yml`
+ 
  or:
+ 
  `Kubectl apply -f .`
 - in windows you may need to run in a tunnel to access the application:
  `minikube tunnel`
